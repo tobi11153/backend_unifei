@@ -61,7 +61,27 @@ app.get("/usuarios/:id", (req, res) => {
         console.log(error);
     }
 });
-
+app.delete("/usuarios/:id", (req, res) => {
+    try {
+    console.log("Rota: delete/" + req.params.id);
+    client.query(
+    "DELETE FROM Usuarios WHERE id = $1", [req.params.id], (err, result) => {
+    if (err) {
+    return console.error("Erro ao executar a qry de DELETE", err);
+    } else {
+    if (result.rowCount == 0) {
+    res.status(404).json({ info: "Registro não encontrado." });
+    } else {
+    res.status(200).json({ info: `Registro excluído. Código: ${id}` });
+    }
+    }
+    console.log(result);
+    }
+    );
+    } catch (error) {
+    console.log(error);
+    }
+   });
 //Precisa ser a ultima função
 app.listen(config.port, () =>
     console.log("Servidor funcionando na porta " + config.port)
